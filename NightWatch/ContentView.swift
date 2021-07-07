@@ -7,75 +7,66 @@
 
 import SwiftUI
 
+let nightlyTasks = [
+    "Check all Windows",
+    "Check all doors",
+    "Check that the safe is locked",
+    "Check the mailbox",
+    "Clear ice from sidewalks",
+    "Inspect security cameras",
+    "Document \"strange and unususal\" occurrances"
+]
+
+let weeklyTasks = [
+    "Log the tapes"
+]
+
+let monthlyTasks = [
+    "Report strange occurrances"
+]
+
 struct ContentView: View {
     var body: some View {
-        HStack {
-            VStack {
-                VStack(alignment: .leading) {
-                    // MARK: Nightly Tasks
-                    Group {
-                        Divider()
-                        HStack {
-                            Text(Image(systemName: "moon.stars"))
-                                .foregroundColor(.yellow)
-                                .font(.title3)
-                                .fontWeight(.heavy)
-                                .padding(.bottom)
-                             Text("Nightly Tasks")
-                                .underline()
-                                .font(.title2)
-                                .fontWeight(.heavy)
-                                .foregroundColor(.yellow)
-                                .padding(.bottom)
-                                .textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                        }
-                        Text("Check all windows")
-                        Text("Check all doors")
-                        Text("Check that the safe is locked")
-                        Text("Check the mailbox")
-                        Text("Check the mailbox")
-                        Text("Check the security camera")
-                        Text("Document \"Strange and unusual\" occurrences ")
-                    }
-                    // MARK: Weekly Tasks
-                    Group {
-                        Divider()
-                        HStack {
-                            Text(Image(systemName: "sunset"))
-                                .foregroundColor(.yellow)
-                                .font(.title3)
-                                .fontWeight(.heavy)
-                            Text("Weekly Tasks")
-                                .underline()
-                                .font(.title2)
-                                .fontWeight(.heavy)
-                                .foregroundColor(.yellow)
-                                .padding(.top)
-                                .textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                        }
-                    }
-                    // MARK: Monthly Tasks
-                    Group {
-                        Divider()
-                        HStack {
-                            Text(Image(systemName: "calendar"))
-                                .foregroundColor(.yellow)
-                                .font(.title3)
-                                .fontWeight(.heavy)
-                            Text("Monthly Tasks")
-                                .underline()
-                                .font(.title2)
-                                .fontWeight(.heavy)
-                                .foregroundColor(.yellow)
-                                .textCase(/*@START_MENU_TOKEN@*/.uppercase/*@END_MENU_TOKEN@*/)
-                        }
-                    }
+        NavigationView {
+            List {
+                Section(header: TaskSectionHeader(symbolSystemName: "moon.stars", headerText: "Nightly Tasks")) {
+                    ForEach(nightlyTasks, id: \.self, content: {
+                        taskName in
+                        NavigationLink(taskName, destination:
+                                       DetailsView(taskName: taskName, taskDescription: "Description Here")
+                        )
+                    })
                 }
-                .padding([.top, .leading, .bottom])
-                Spacer()
+                
+                Section(header: TaskSectionHeader(symbolSystemName: "sunset", headerText: "Weekly Tasks")) {
+                    ForEach(weeklyTasks, id: \.self, content: {
+                        taskName in
+                        NavigationLink(taskName, destination: Text(taskName))
+                    })
+                }
+                
+                Section(header: TaskSectionHeader(symbolSystemName: "calendar", headerText: "Monthly Tasks")) {
+                    ForEach(monthlyTasks, id: \.self, content: {
+                        taskName in
+                        NavigationLink(taskName, destination: Text(taskName))
+                    })
+                }
             }
-            Spacer()
+            .listStyle(GroupedListStyle())
+            .navigationTitle("Home")
         }
+        
+    }
+}
+
+struct TaskSectionHeader: View {
+    let symbolSystemName: String
+    let headerText: String
+    var body: some View {
+        HStack {
+            Image(systemName: symbolSystemName)
+            Text("Nightly Tasks")
+        }.font(.title3)
     }
 }
 
@@ -84,3 +75,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
